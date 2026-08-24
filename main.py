@@ -37,8 +37,9 @@ def make_transfer():
     print("Transfer")
 
 
-def transaction_history():
-    print("Transaction history")
+def view_transaction_history():
+    account_number = input("Enter account number: ")
+    transaction_history.display_history(account_number)
 
 
 def find_customer(customer_id):

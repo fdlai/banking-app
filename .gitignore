@@ -45,3 +45,9 @@ dist/
 /.gitignore
 /.vs/banking-app.slnx/FileContentIndex
 *.wsuo
+/.vs/slnx.sqlite
+/.vs/slnx.sqlite-journal
+
+# Visual Studio
+.vs/
+/.vs/banking-app/CopilotIndices/18.9.1311.36310/SemanticSymbols.db-wal

@@ -1,3 +1,8 @@
+from transaction import TransactionHistory
+
+transaction_history = TransactionHistory()
+
+
 def main():
     while True:
         print("=====Banking System=====")
@@ -26,11 +31,47 @@ def main():
 
 
 def deposit():
-    print("Deposit")
+    account_number = input("Enter account number: ")
+    account = find_account(account_number)
+
+    if account is None:
+        print("Account not found.")
+        return
+
+    amount = get_amount("Enter deposit amount: $")
+
+    try:
+        account.deposit(amount)
+
+        transaction_history.add_transaction(account_number, "Deposit", amount)
+
+        print("Deposit successful.")
+        print(f"New balance: ${account.balance:.2f}")
+
+    except ValueError as error:
+        print(error)
 
 
 def withdraw():
-    print("Withdraw")
+    account_number = input("Enter account number: ")
+    account = find_account(account_number)
+
+    if account is None:
+        print("Account not found.")
+        return
+
+    amount = get_amount("Enter withdrawal amount: $")
+
+    try:
+        account.withdraw(amount)
+
+        transaction_history.add_transaction(account_number, "Withdrawal", amount)
+
+        print("Withdrawal successful.")
+        print(f"New balance: ${account.balance:.2f}")
+
+    except ValueError as error:
+        print(error)
 
 
 def make_transfer():
@@ -39,12 +80,22 @@ def make_transfer():
 
 def view_transaction_history():
     account_number = input("Enter account number: ")
-    transaction_history = find_transaction_history(account_number)
-    if transaction_history:
-        for transaction in transaction_history:
-            print(transaction)
-    else:
-        print("No transactions found for this account.")
+    transaction_history.display_history(account_number)
+
+
+def get_amount(prompt):
+    while True:
+        try:
+            amount = float(input(prompt))
+
+            if amount <= 0:
+                print("Amount must be greater than zero.")
+                continue
+
+            return amount
+
+        except ValueError:
+            print("Please enter a valid number.")
 
 
 def find_customer(customer_id):
@@ -52,10 +103,6 @@ def find_customer(customer_id):
 
 
 def find_account(account_number):
-    pass
-
-
-def get_amount(prompt):
     pass
 
 

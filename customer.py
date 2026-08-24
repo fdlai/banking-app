@@ -7,8 +7,8 @@ class Customer:
     def __init__(self, name, dob):
         self.name = name
         self.dob = dob
-        self.account = None
+        self.accounts = []
 
     def add_account(self, account):
         """Connect an account to this customer."""
-        self.account = account
+        self.accounts.append(account)

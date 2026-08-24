@@ -11,30 +11,21 @@ from transaction import Transaction
 class Account(ABC):
     """
     Base class for every account type.
-    This class is ABSTRACT - you can never write Account("Luis", 500).
+    This class is ABSTRACT - you can never write Account("ACC1001", "Luis", 500).
     It defines WHAT every account must do; subclasses define HOW.
     """
 
-    # Class-level counter, shared by ALL accounts (not per object).
-    _last_account_number = 1000
 
-    # ----------------------------------------------------------
-    # THE CONSTRUCTOR
-    # __init__ runs AUTOMATICALLY when you write
-    # SavingsAccount("Luis", 500). You never call it yourself.
-    #   self            -> the new object being built
-    #   owner_name      -> data injected into it
-    #   initial_balance -> has a DEFAULT, so it is optional
-    # Its job: put the object in a VALID state before use.
-    # ----------------------------------------------------------
-    def __init__(self, owner_name: str, initial_balance: float = 0.0):
+    def __init__(self, account_number: str, owner_name: str,
+                 initial_balance: float = 0.0):
+        if not account_number or not account_number.strip():
+            raise ValueError("An account must have an account number.")
         if not owner_name or not owner_name.strip():
             raise ValueError("An account must have an owner name.")
         if initial_balance < 0:
             raise ValueError("Opening balance cannot be negative.")
 
-        Account._last_account_number += 1
-        self.account_number = f"ACC{Account._last_account_number}"
+        self.account_number = account_number.strip().upper()
         self.owner_name = owner_name.strip()
 
         # ENCAPSULATION: double underscore = name mangling.
@@ -58,10 +49,7 @@ class Account(ABC):
         self.__record("DEPOSIT", amount)
 
     def withdraw(self, amount: float) -> None:
-        """
-        Default rule: cannot take out more than you have.
-        Savings and Checking OVERRIDE this - that is POLYMORPHISM.
-        """
+
         if amount <= 0:
             raise ValueError("Withdrawal amount must be greater than zero.")
         if amount > self.__balance:

@@ -15,7 +15,17 @@ class Account(ABC):
     It defines WHAT every account must do; subclasses define HOW.
     """
 
-
+    # ----------------------------------------------------------
+    # THE CONSTRUCTOR
+    # __init__ runs AUTOMATICALLY when you write
+    # SavingsAccount("ACC1001", "Luis", 500).
+    # You never call it yourself.
+    #   self            -> the new object being built
+    #   account_number  -> data injected into it
+    #   owner_name      -> data injected into it
+    #   initial_balance -> has a DEFAULT, so it is optional
+    # Its job: put the object in a VALID state before use.
+    # ----------------------------------------------------------
     def __init__(self, account_number: str, owner_name: str,
                  initial_balance: float = 0.0):
         if not account_number or not account_number.strip():
@@ -49,7 +59,10 @@ class Account(ABC):
         self.__record("DEPOSIT", amount)
 
     def withdraw(self, amount: float) -> None:
-
+        """
+        Default rule: cannot take out more than you have.
+        Savings and Checking OVERRIDE this - that is POLYMORPHISM.
+        """
         if amount <= 0:
             raise ValueError("Withdrawal amount must be greater than zero.")
         if amount > self.__balance:

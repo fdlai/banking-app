@@ -1,6 +1,4 @@
-from transaction import TransactionHistory
-
-transaction_history = TransactionHistory()
+from customerdata import customers
 
 
 def main():
@@ -43,8 +41,6 @@ def deposit():
     try:
         account.deposit(amount)
 
-        transaction_history.add_transaction(account_number, "Deposit", amount)
-
         print("Deposit successful.")
         print(f"New balance: ${account.balance:.2f}")
 
@@ -65,8 +61,6 @@ def withdraw():
     try:
         account.withdraw(amount)
 
-        transaction_history.add_transaction(account_number, "Withdrawal", amount)
-
         print("Withdrawal successful.")
         print(f"New balance: ${account.balance:.2f}")
 
@@ -80,7 +74,22 @@ def make_transfer():
 
 def view_transaction_history():
     account_number = input("Enter account number: ")
-    transaction_history.display_history(account_number)
+    account = find_account(account_number)
+
+    if account is None:
+        print("Account not found.")
+        return
+
+    history = account.get_history()
+
+    print("\n===== TRANSACTION HISTORY =====")
+
+    if not history:
+        print("No transactions found.")
+        return
+
+    for transaction in history:
+        print(f"{transaction.transaction_type}: ${transaction.amount:.2f}")
 
 
 def get_amount(prompt):
@@ -99,11 +108,20 @@ def get_amount(prompt):
 
 
 def find_customer(customer_id):
-    pass
+    for customer in customers:
+        if customer.customer_id.upper() == customer_id.upper():
+            return customer
+
+    return None
 
 
 def find_account(account_number):
-    pass
+    for customer in customers:
+        for account in customer.accounts:
+            if account.account_number.upper() == account_number.upper():
+                return account
+
+    return None
 
 
 def view_accounts():
@@ -119,8 +137,8 @@ def view_accounts():
     for account in customer.accounts:
         print(
             f"{account.account_number} - "
-            f"{account.__class__.__name__} - "
-            f"${account.get_balance():.2f}"
+            f"{account.account_type()} - "
+            f"${account.balance:.2f}"
         )
 
 

@@ -1,16 +1,12 @@
-"""Customer model and shared in-memory banking data."""
-
-# Shared application data for the console banking program.
-customers = []
-accounts = []
-transactions = []
+"""Customer model for the banking application."""
 
 
 class Customer:
     """Represents a bank customer and the account connected to them."""
 
-    def __init__(self, name):
+    def __init__(self, name, dob):
         self.name = name
+        self.dob = dob
         self.account = None
 
     def add_account(self, account):

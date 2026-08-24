@@ -17,7 +17,7 @@ def main():
         elif choice == "3":
             withdraw()
         elif choice == "4":
-            transaction_history()
+            view_transaction_history()
         elif choice == "5":
             print("Thank you for using our banking system.")
             break
@@ -39,7 +39,12 @@ def make_transfer():
 
 def view_transaction_history():
     account_number = input("Enter account number: ")
-    transaction_history.display_history(account_number)
+    transaction_history = find_transaction_history(account_number)
+    if transaction_history:
+        for transaction in transaction_history:
+            print(transaction)
+    else:
+        print("No transactions found for this account.")
 
 
 def find_customer(customer_id):
